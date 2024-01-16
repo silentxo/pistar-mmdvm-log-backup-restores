@@ -4,9 +4,10 @@
 fs=$(grep "/dev/root" /proc/mounts | sed -n "s/.*\(r[ow]\).*/\1/p")
 #fs=$(sed -n "/\/dev\/root/ {s/.*\(r[ow]\).*/\1/p}" /proc/mounts)
 #rpi-rw
-if [ "$fs" == "ro" ]; then
-  sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot
-fi
+#because wpsd not set disk in ro mode so commmit these
+#if [ "$fs" == "ro" ]; then
+#  sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot
+#fi
 #
 cd /usr/local/sbin
 #=================================================================================================================
@@ -16,11 +17,11 @@ echo '#'                                                               >> pistar
 echo 'if [ ! -d /var/log/pi-star ]; then'                              >> pistar-mmdvm-log-backups
 echo '  exit 0'                                                        >> pistar-mmdvm-log-backups
 echo 'fi'                                                              >> pistar-mmdvm-log-backups
-echo '#rpi-rw'                                                         >> pistar-mmdvm-log-backups
-echo 'xro=$(grep "/dev/root" /proc/mounts | sed -n "s/.*\(r[ow]\).*/\1/p")'  >> pistar-mmdvm-log-backups
-echo 'if [ "$xro" == "ro" ]; then'                                     >> pistar-mmdvm-log-backups
-echo '  sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'   >> pistar-mmdvm-log-backups
-echo 'fi'                                                              >> pistar-mmdvm-log-backups
+#echo '#rpi-rw'                                                         >> pistar-mmdvm-log-backups
+#echo 'xro=$(grep "/dev/root" /proc/mounts | sed -n "s/.*\(r[ow]\).*/\1/p")'  >> pistar-mmdvm-log-backups
+#echo 'if [ "$xro" == "ro" ]; then'                                     >> pistar-mmdvm-log-backups
+#echo '  sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'   >> pistar-mmdvm-log-backups
+#echo 'fi'                                                              >> pistar-mmdvm-log-backups
 echo '#'                                                               >> pistar-mmdvm-log-backups
 echo 'rbt=0'                                                           >> pistar-mmdvm-log-backups
 echo 'while getopts ur opt; do'                                        >> pistar-mmdvm-log-backups
@@ -51,10 +52,10 @@ echo 'if [ $rbt == 1 ]; then'                                          >> pistar
 echo '  sudo touch /home/pi-star/.mlogs/reboot-$(date +%Y-%m-%d-%H:%M:%S)'   >> pistar-mmdvm-log-backups
 echo 'fi'                                                              >> pistar-mmdvm-log-backups
 echo '#'                                                               >> pistar-mmdvm-log-backups
-echo '#rpi-ro'                                                         >> pistar-mmdvm-log-backups
-echo 'if [ "$xro" == "ro" ]; then'                                     >> pistar-mmdvm-log-backups
-echo '  sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'   >> pistar-mmdvm-log-backups
-echo 'fi'                                                              >> pistar-mmdvm-log-backups
+#echo '#rpi-ro'                                                         >> pistar-mmdvm-log-backups
+#echo 'if [ "$xro" == "ro" ]; then'                                     >> pistar-mmdvm-log-backups
+#echo '  sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'   >> pistar-mmdvm-log-backups
+#echo 'fi'                                                              >> pistar-mmdvm-log-backups
 #=================================================================================================================
 sudo chmod +x         pistar-mmdvm-log-backups
 sudo chown root:staff pistar-mmdvm-log-backups
@@ -62,8 +63,8 @@ sudo chown root:staff pistar-mmdvm-log-backups
 echo '#!/bin/bash'                                                      > pistar-mmdvm-log-restores
 echo '# Restore MMDVM logs during startups (reboots)'                  >> pistar-mmdvm-log-restores
 echo '#'                                                               >> pistar-mmdvm-log-restores
-echo '#rpi-rw'                                                         >> pistar-mmdvm-log-restores
-echo 'xro=$(grep "/dev/root" /proc/mounts | sed -n "s/.*\(r[ow]\).*/\1/p")'      >> pistar-mmdvm-log-restores
+#echo '#rpi-rw'                                                         >> pistar-mmdvm-log-restores
+#echo 'xro=$(grep "/dev/root" /proc/mounts | sed -n "s/.*\(r[ow]\).*/\1/p")'      >> pistar-mmdvm-log-restores
 echo 'xmv=$(sudo systemctl is-active mmdvmhost.service)'               >> pistar-mmdvm-log-restores
 echo '#'                                                               >> pistar-mmdvm-log-restores
 echo 'rbt=0'                                                           >> pistar-mmdvm-log-restores
@@ -77,9 +78,9 @@ echo 'done'                                                            >> pistar
 echo 'shift $(($OPTIND - 1))'                                          >> pistar-mmdvm-log-restores
 echo '#'                                                               >> pistar-mmdvm-log-restores
 echo 'if [ -d /home/pi-star/.mlogs ]; then'                            >> pistar-mmdvm-log-restores
-echo '    if [ "$xro" == "ro" ]; then'                                 >> pistar-mmdvm-log-restores
-echo '       sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'        >> pistar-mmdvm-log-restores
-echo '    fi'                                                          >> pistar-mmdvm-log-restores
+#echo '    if [ "$xro" == "ro" ]; then'                                 >> pistar-mmdvm-log-restores
+#echo '       sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'        >> pistar-mmdvm-log-restores
+#echo '    fi'                                                          >> pistar-mmdvm-log-restores
 echo '    if [ "$xmv" == "active" ]; then'                             >> pistar-mmdvm-log-restores
 echo '       sudo systemctl stop mmdvmhost.service'                    >> pistar-mmdvm-log-restores
 echo '    fi'                                                          >> pistar-mmdvm-log-restores
@@ -116,9 +117,9 @@ echo '#'                                                               >> pistar
 echo '    if [ "$xmv" == "active" ]; then'                             >> pistar-mmdvm-log-restores
 echo '       sudo systemctl start mmdvmhost.service'                   >> pistar-mmdvm-log-restores
 echo '    fi'                                                          >> pistar-mmdvm-log-restores
-echo '    if [ "$xro" == "ro" ]; then'                                 >> pistar-mmdvm-log-restores
-echo '       sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'        >> pistar-mmdvm-log-restores
-echo '    fi'                                                          >> pistar-mmdvm-log-restores
+#echo '    if [ "$xro" == "ro" ]; then'                                 >> pistar-mmdvm-log-restores
+#echo '       sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'        >> pistar-mmdvm-log-restores
+#echo '    fi'                                                          >> pistar-mmdvm-log-restores
 echo 'fi'                                                              >> pistar-mmdvm-log-restores
 #=================================================================================================================
 sudo chmod +x         pistar-mmdvm-log-restores
@@ -127,11 +128,11 @@ sudo chown root:staff pistar-mmdvm-log-restores
 echo '#!/bin/bash'                                                      > pistar-mmdvm-log-backup-age
 echo '# Age MMDVM log file backups'                                    >> pistar-mmdvm-log-backup-age
 echo '#'                                                               >> pistar-mmdvm-log-backup-age
-echo 'xro=$(grep "/dev/root" /proc/mounts | sed -n "s/.*\(r[ow]\).*/\1/p")' >> pistar-mmdvm-log-backup-age
+#echo 'xro=$(grep "/dev/root" /proc/mounts | sed -n "s/.*\(r[ow]\).*/\1/p")' >> pistar-mmdvm-log-backup-age
 echo '#rpi-rw'                                                         >> pistar-mmdvm-log-backup-age
-echo 'if [ "$xro" == "ro" ]; then'                                     >> pistar-mmdvm-log-backup-age
-echo '  sudo mount -o remount,rw / # sudo mount -o remount,rw /boot'   >> pistar-mmdvm-log-backup-age
-echo 'fi'                                                              >> pistar-mmdvm-log-backup-age
+#echo 'if [ "$xro" == "ro" ]; then'                                     >> pistar-mmdvm-log-backup-age
+#echo '  sudo mount -o remount,rw / # sudo mount -o remount,rw /boot'   >> pistar-mmdvm-log-backup-age
+#echo 'fi'                                                              >> pistar-mmdvm-log-backup-age
 echo '#'                                                               >> pistar-mmdvm-log-backup-age
 echo 'file=/home/pi-star/.mlogs'                                       >> pistar-mmdvm-log-backup-age
 echo 'm0=14                             # number to be kept'           >> pistar-mmdvm-log-backup-age
@@ -157,9 +158,9 @@ echo 'fi'                                                              >> pistar
 echo 'logger -t "[$$]" "Pi-Star --> MMDVM log backups aged: $m2 files <--"' >> pistar-mmdvm-log-backup-age
 echo '#'                                                               >> pistar-mmdvm-log-backup-age
 echo '#rpi-ro'                                                         >> pistar-mmdvm-log-backup-age
-echo 'if [ "$xro" == "ro" ]; then'                                     >> pistar-mmdvm-log-backup-age
-echo '  sudo mount -o remount,ro / # sudo mount -o remount,ro /boot'   >> pistar-mmdvm-log-backup-age
-echo 'fi'                                                              >> pistar-mmdvm-log-backup-age
+#echo 'if [ "$xro" == "ro" ]; then'                                     >> pistar-mmdvm-log-backup-age
+#echo '  sudo mount -o remount,ro / # sudo mount -o remount,ro /boot'   >> pistar-mmdvm-log-backup-age
+#echo 'fi'                                                              >> pistar-mmdvm-log-backup-age
 #=================================================================================================================
 sudo chmod +x         pistar-mmdvm-log-backup-age
 sudo chown root:staff pistar-mmdvm-log-backup-age
@@ -174,6 +175,6 @@ sudo chmod +x         pistar-daily-mmdvm-log-backup-age
 sudo chown root:root  pistar-daily-mmdvm-log-backup-age
 #
 #rpi-ro
-if [ "$fs" == "ro" ]; then
-  sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot
-fi
+#if [ "$fs" == "ro" ]; then
+#  sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot
+#fi
